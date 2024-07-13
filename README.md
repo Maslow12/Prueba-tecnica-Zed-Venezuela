@@ -1,2 +1,2 @@
 # Prueba-tecnica-Zed-Venezuela
-Prueba tecnica realizada por Sebastian Yusti. 05-07-2024
+Prueba tecnica realizada por Sebastian Yusti. 13-07-2024
