@@ -1,33 +1,44 @@
 services:
   db:
-    container_name: maria-db
     image: mariadb
+    #restart: always
+    container_name: db
     ports:
-      - "5432:5432"
-    volumes:
-      - maria-db-data:./
+      - "3306:3306"
+    networks:
+      - backend-network
+    #volumes:
+    #  - mariadb_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: test_db
       MYSQL_USER: test_user
       MYSQL_PASSWORD: admin
-      MYSQL_HOST: localhost
-    networks:
-      - backend-network
+      #MYSQL_HOST: localhost
+    healthcheck:
+      test: "mariadb $$MYSQL_DATABASE -utest_user -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 2s
+      timeout: 2s
+      retries: 10
 
-
-  backend:
-    container_name: backend
+  api:
+    container_name: api
     build:
-      context: .
-      dockerfile: Dockerfile
-
+        context: .
+        dockerfile: Dockerfile
     ports:
       - "8000:8000"
     networks:
       - backend-network
+    depends_on:
+       db:
+        condition: service_healthy
 
 networks:
   backend-network:
-    name: backend-network
-    driver: bridge
+    #name: backend-network
+    #driver: "bridge"
+    #internal: true
+
+volumes:
+  mariadb_data:

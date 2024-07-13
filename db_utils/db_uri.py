@@ -10,8 +10,6 @@ password = os.getenv("MYSQL_PASSWORD")
 database = os.getenv("MYSQL_DATABASE")
 
 def mariadb_uri_2():
-    uri = "mariadb+mariadbconnector://{0}:{1}@{2}:{3}/{4}".format(
-        user, password, host, port, database
-    )
+    uri = "mysql+pymysql://test_user:admin@db:3306/test_db"
     print(uri)
     return uri
